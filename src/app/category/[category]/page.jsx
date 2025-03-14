@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import Filter from "@/components/Filter";
-import CategoryBooks from "@/components/books/CategoryBooks";
+// import CategoryBooks from "@/components/books/CategoryBooks";
 import CategoryBooksClient from "@/components/books/CategoryBooksClient";
 import CategoryBookSearch from "@/components/CategoryBookSearch";
 import LoadingSkeleton from "@/components/LoadingSkeleton";

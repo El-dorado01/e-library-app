@@ -132,6 +132,65 @@ export async function fetchNewReleases(sortBy) {
 /*
   FETCHES BOOKS PER PAGE FOR A SINGLE CATEGORY
 */
+export async function fetchNewReleasesByPage(sortBy, page) {
+  const resultsPerPage = 15;
+  const startIndex = (page - 1) * resultsPerPage;
+
+  try {
+    const response = await fetch(
+      `${BASE_URL}?q=books&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=${sortBy}&key=${GOOGLE_BOOKS_API_KEY}`,
+      {
+        cache: "force-cache",
+      }
+    );
+    if (!response.ok) {
+        const errorText = await response.text();
+      throw new Error(`API error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    if (!data.items || data.items.length === 0) {
+      return {
+        books: [],
+        totalBooks: 0,
+        currentPage: page,
+        booksPerPage: resultsPerPage,
+        error: "No books found for this category or page.",
+      };
+    }
+
+    const books = data.items.map((item) => ({
+      id: item.id,
+      title: item.volumeInfo.title,
+      authors: item.volumeInfo.authors || ["Unknown"],
+      subjects: item.volumeInfo.categories || ["N/A"],
+      cover: item.volumeInfo.imageLinks?.thumbnail || null,
+      isWork: false, // Google Books doesn’t distinguish works vs editions like Open Library
+    }));
+
+    return {
+      books,
+      totalBooks: data.totalItems || 0,
+      currentPage: parseInt(page, 10),
+      booksPerPage: resultsPerPage,
+    };
+  } catch (error) {
+    console.error("Fetch error:", error.message);
+    return {
+      books: [],
+      totalBooks: 0,
+      currentPage: page,
+      booksPerPage: resultsPerPage,
+      error: error.message.includes("API error")
+        ? `Failed to fetch books: ${error.message}`
+        : "Network error: Please check your connection and try again.",
+    };
+  }
+}
+
+/*
+  FETCHES BOOKS PER PAGE FOR A SINGLE CATEGORY
+*/
 export async function fetchCategoryBooksByPage(category, page) {
   const resultsPerPage = 9;
   const startIndex = (page - 1) * resultsPerPage;

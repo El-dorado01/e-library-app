@@ -6,14 +6,14 @@ export default function Carousel(params) {
   return (
     <div id="header-carousel" className="carousel slide" data-ride="carousel">
       <div className="carousel-inner">
-        <div className="carousel-item active" style={{ height: "410px" }}>
+        <div className="carousel-item active">
           <Image
             className="img-fluid"
             layout="responsive"
             src={bg1}
             alt="Image"
-            height={100}
             width={100}
+            height={100}
           />
           <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
             <div className="p-3" style={{ maxWidth: "700px" }}>
@@ -29,7 +29,7 @@ export default function Carousel(params) {
             </div>
           </div>
         </div>
-        <div className="carousel-item" style={{ height: "410px" }}>
+        <div className="carousel-item">
           <Image
             src={bg2}
             width={100}

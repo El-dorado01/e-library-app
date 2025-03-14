@@ -3,6 +3,7 @@
 import mainFunction from "@/scripts/main";
 import { useEffect } from "react";
 import $ from "jquery";
+import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 import Carousel from "./Carousel";
@@ -42,14 +43,14 @@ export default function Navbar() {
         </div>
         <div className="col-lg-9">
           <nav className="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-            <a href="" className="text-decoration-none d-block d-lg-none">
+            <Link href="/" className="text-decoration-none d-block d-lg-none">
               <h1 className="m-0 display-5 font-weight-semi-bold">
                 <span className="text-primary font-weight-bold border px-3 mr-1">
                   E
                 </span>
                 Library
               </h1>
-            </a>
+            </Link>
             <button
               type="button"
               className="navbar-toggler"
@@ -63,15 +64,15 @@ export default function Navbar() {
               id="navbarCollapse"
             >
               <div className="navbar-nav mr-auto py-0">
-                <a href="" className="nav-item nav-link active">
+                <Link href="/" className="nav-item nav-link active">
                   Home
-                </a>
-                <a href="" className="nav-item nav-link">
+                </Link>
+                <Link href="/popular_books" className="nav-item nav-link">
                   Popular Books
-                </a>
-                <a href="" className="nav-item nav-link">
+                </Link>
+                <Link href="/new_releases" className="nav-item nav-link">
                   New Releases
-                </a>
+                </Link>
                 {/*<div className="nav-item dropdown">
                     <a
                       href="#"
@@ -89,17 +90,17 @@ export default function Navbar() {
                       </a>
                     </div> 
                   </div>*/}
-                <a href="contact.html" className="nav-item nav-link">
+                <Link href="/contact" className="nav-item nav-link">
                   Contact
-                </a>
+                </Link>
               </div>
               {/* <div className="navbar-nav ml-auto py-0">
-                  <a href="" className="nav-item nav-link">
+                  <Link href="" className="nav-item nav-link">
                     Login
-                  </a>
-                  <a href="" className="nav-item nav-link">
+                  </Link>
+                  <Link href="" className="nav-item nav-link">
                     Register
-                  </a>
+                  </Link>
                 </div> */}
             </div>
           </nav>
