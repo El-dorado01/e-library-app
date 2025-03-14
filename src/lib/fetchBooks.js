@@ -68,6 +68,68 @@ export async function fetchPopularBooks(sortBy) {
 }
 
 /*
+  FETCHES TWO NEW RELEASES PER CATEGORY
+*/
+export async function fetchNewReleases(sortBy) {
+  // await delay(2000); // Uncomment if needed for testing
+  const books = [];
+  const categories = [
+    "medicine",
+    "music",
+    "textbook",
+    "action",
+    "fantasy",
+    "religion",
+  ];
+
+  try {
+    for (const category of categories) {
+      const response = await fetch(
+        `${BASE_URL}?q=subject:${encodeURIComponent(
+          category
+        )}&maxResults=2&orderBy=${sortBy}&key=${GOOGLE_BOOKS_API_KEY}`,
+        {
+          cache: "force-cache",
+        }
+      );
+      if (!response.ok) {
+        throw new Error(
+          `API error: ${response.status} - ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      if (!data.items || data.items.length === 0) {
+        console.warn(`No books found for category: ${category}`);
+        continue; // Skip to next category if no results
+      }
+
+      const categoryBooks = data.items.map((item) => ({
+        id: item.id, // Google Books uses volumeId
+        title: item.volumeInfo.title,
+        authors: item.volumeInfo.authors || ["Unknown"],
+        subjects: item.volumeInfo.categories || ["N/A"],
+        cover: item.volumeInfo.imageLinks?.thumbnail || null,
+      }));
+
+      books.push(...categoryBooks);
+    }
+
+    return {
+      books,
+    };
+  } catch (error) {
+    console.error("Fetch error:", error.message);
+    return {
+      books: [],
+      error: error.message.includes("API error")
+        ? `Failed to fetch books: ${error.message}`
+        : "Network error: Please check your connection and try again.",
+    };
+  }
+}
+
+/*
   FETCHES BOOKS PER PAGE FOR A SINGLE CATEGORY
 */
 export async function fetchCategoryBooksByPage(category, page) {
@@ -78,7 +140,7 @@ export async function fetchCategoryBooksByPage(category, page) {
     const response = await fetch(
       `${BASE_URL}?q=${encodeURIComponent(
         category
-      )}&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=newest&key=${GOOGLE_BOOKS_API_KEY}`,
+      )}&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=relevance&key=${GOOGLE_BOOKS_API_KEY}`,
       {
         cache: "force-cache",
       }
@@ -132,7 +194,6 @@ export async function fetchCategoryBooksByPage(category, page) {
   FETCHES A SINGLE BOOK BY ITS ID
 */
 export async function fetchBookById(id) {
-  console.log(`Fetching book with ID: ${id}...`);
 
   try {
     const response = await fetch(
@@ -152,9 +213,7 @@ export async function fetchBookById(id) {
       throw new Error(`API error: ${response.status} - ${errorText}`);
     }
 
-    const data = await response.json();
-    console.log("Data volume info: ", data);
-    
+    const data = await response.json();    
 
     const book = {
       url:
@@ -165,9 +224,7 @@ export async function fetchBookById(id) {
       subtitle: data.volumeInfo.subtitle,
       numberOfPages: data.volumeInfo.pageCount,
       authors: data.volumeInfo.authors || [
-        {
-          name: "Unknown",
-        },
+         "Unknown",
       ],
       publishers: data.volumeInfo.publisher
         ? [
@@ -195,7 +252,10 @@ export async function fetchBookById(id) {
             },
           ]
         : [],
-      cover: data.volumeInfo.imageLinks?.large || null,
+      cover:
+        data.volumeInfo.imageLinks?.large ||
+        data.volumeInfo.imageLinks?.thumbnail ||
+        null,
     };
 
     const isDownloadable =
@@ -207,8 +267,6 @@ export async function fetchBookById(id) {
       ? data.accessInfo.pdf.downloadLink || data.accessInfo.epub.downloadLink
       : null;
 
-    // console.log(`Downloadable: ${isDownloadable}, URL: ${downloadUrl}`);
-    console.log(`Fetched book: ${book.title}, Downloadable: ${isDownloadable}`);
     return {
       book,
       isDownloadable,

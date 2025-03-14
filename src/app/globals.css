@@ -315,17 +315,26 @@ legend {
   white-space: normal;
 }
 
-.downloadButton {
+.downloadButton, .read-more {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.read-more {
+  background-color: var(--info);
 }
 
 .downloadButton:hover {
   background-color: #0056b3;
+}
+
+.read-more:hover {
+  background-color: var(--blue);
 }
 
 .openLibraryLink {

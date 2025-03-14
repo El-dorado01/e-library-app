@@ -1,4 +1,5 @@
 import DownloadButton from "../DownloadButton";
+import BookDescription from "./BookDescription";
 
 export default function BookInfo({
   title,
@@ -25,20 +26,16 @@ export default function BookInfo({
         <small className="pt-1">(50 Reviews)</small>
       </div>
       <h3 className="font-weight-semi-bold mb-4">$150.00</h3>
-      {descriptions
-        ? descriptions.map((desc) => (
-            <p className="mb-4" key={desc.text}>
-              {desc.text}
-            </p>
-          ))
-        : "No description"}
+      <BookDescription descriptions={descriptions} />
       <div className="d-flex mb-3">
         <p className="text-dark font-weight-medium mb-0 mr-3">Author(s):</p>
-          {!authors
-            ? "No Information available"
-            : authors.map((author) => (
-                <span key={author}>{author}</span>
-              ))}
+        {!authors
+          ? "No Information available"
+          : authors
+              .map((author) => {
+                return author;
+              })
+              .join(", ")}
       </div>
 
       <div className="d-flex mb-4">

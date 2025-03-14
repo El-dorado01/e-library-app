@@ -20,10 +20,17 @@ export default function MoreBookInfo({ bookInfo }) {
         <div className="tab-content">
           <div className="tab-pane fade show active" id="tab-pane-1">
             <h4 className="mb-3">Book Description</h4>
-            {bookInfo.excerpts
-              ? bookInfo.excerpts.map((desc) => (
-                  <p key={desc.text}>{desc.text}</p>
-                ))
+            {bookInfo.excerpts.length > 0
+              ? bookInfo.excerpts.map((desc) => {
+                  const plainText = desc.text.replace(/<[^>]+>/g, "");
+                  return (
+                    <div
+                      className="mb-4"
+                      key={desc.text}
+                      dangerouslySetInnerHTML={{ __html: plainText }}
+                    />
+                  );
+                })
               : "No description"}
           </div>
           <div className="tab-pane fade" id="tab-pane-2">
@@ -39,36 +46,48 @@ export default function MoreBookInfo({ bookInfo }) {
                 <ul className="list-group list-group-flush">
                   <li className="list-group-item px-0">
                     Publishers:{" "}
-                    {bookInfo.publishers.map((publisher) => (
-                      <span key={publisher.name}>{publisher.name}</span>
-                    ))}
+                    {bookInfo.publishers.length > 0
+                      ? bookInfo.publishers
+                          .map((publisher) => {
+                            return publisher.name;
+                          })
+                          .join(", ")
+                      : "No information available"}
                     .
                   </li>
                   <li className="list-group-item px-0">
                     Published Date: {bookInfo.publish_date}.
                   </li>
-                  {/* {bookInfo.industryIdentifiers
-                    ? bookInfo.industryIdentifiers[0].map((industryIdentifier) => (
+                  {bookInfo.industryIdentifiers.length < 1 ? (
+                    <li className="list-group-item px-0">
+                      ISBN: No information available
+                    </li>
+                  ) : (
+                    bookInfo.industryIdentifiers[0].map(
+                      (industryIdentifier) => (
                         <li
                           className="list-group-item px-0"
                           key={industryIdentifier.identifier}
                         >
-                            {industryIdentifier.type +
-                              ": " +
-                              industryIdentifier.identifier}
+                          {industryIdentifier.type +
+                            ": " +
+                            industryIdentifier.identifier}
                         </li>
-                      ))
-                    : "No information available"} */}
+                      )
+                    )
+                  )}
                 </ul>
               </div>
               <div className="col-md-6">
                 <h5>Subjects</h5>
                 <ul className="list-group list-group-flush">
-                  {bookInfo.subjects.slice(0, 4).map((subject) => (
-                    <li className="list-group-item px-0" key={subject}>
-                      {subject}
-                    </li>
-                  ))}
+                  {bookInfo.subjects.length > 0
+                    ? bookInfo.subjects.slice(0, 4).map((subject) => (
+                        <li className="list-group-item px-0" key={subject}>
+                          {subject}
+                        </li>
+                      ))
+                    : "No subject category for this book"}
                 </ul>
               </div>
             </div>

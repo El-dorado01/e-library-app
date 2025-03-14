@@ -13,7 +13,6 @@ export default async function page({ params, searchParams }) {
   const name = allParams.name || id;
 
   const bookData = await fetchBookById(id);
-  console.log(bookData.book.industryIdentifiers[0]);
   
   
 

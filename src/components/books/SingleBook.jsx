@@ -11,6 +11,7 @@ export default function SingleBook({ bookData, id, name }) {
     isDownloadable,
     downloadUrl,
   } = bookData;
+  
 
   if (notFoundFlag) {
     notFound();
