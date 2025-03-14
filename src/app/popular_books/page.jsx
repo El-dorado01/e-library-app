@@ -12,11 +12,11 @@ export default async function NewReleasesPage({ searchParams }) {
   const page = allParams.page || "1";
 
   // Fetch initial data server-side
-  const initialData = await fetchNewReleasesByPage("books", "newest", page);
+  const initialData = await fetchNewReleasesByPage("books", "relevance", page);
 
   return (
     <>
-      <PageHeader pageTitle={"New Releases"} pageName={"New Releases"} />
+      <PageHeader pageTitle={"Popular Books"} pageName={"Popular Books"} />
       <div className="container-fluid pt-5">
         <div className="row px-xl-5">
           <Filter />
@@ -25,9 +25,7 @@ export default async function NewReleasesPage({ searchParams }) {
               <CategoryBookSearch />
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSkeleton />}>
-                  <NewReleasesClient
-                    initialData={initialData}
-                  />
+                  <NewReleasesClient initialData={initialData} />
                 </Suspense>
               </ErrorBoundary>
             </div>

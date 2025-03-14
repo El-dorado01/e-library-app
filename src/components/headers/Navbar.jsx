@@ -64,13 +64,28 @@ export default function Navbar() {
               id="navbarCollapse"
             >
               <div className="navbar-nav mr-auto py-0">
-                <Link href="/" className="nav-item nav-link active">
+                <Link
+                  href="/"
+                  className={`nav-item nav-link ${
+                    pathname === "/" ? "active" : ""
+                  }`}
+                >
                   Home
                 </Link>
-                <Link href="/popular_books" className="nav-item nav-link">
+                <Link
+                  href="/popular_books"
+                  className={`nav-item nav-link ${
+                    pathname === "/popular_books" ? "active" : ""
+                  }`}
+                >
                   Popular Books
                 </Link>
-                <Link href="/new_releases" className="nav-item nav-link">
+                <Link
+                  href="/new_releases"
+                  className={`nav-item nav-link ${
+                    pathname === "/new_releases" ? "active" : ""
+                  }`}
+                >
                   New Releases
                 </Link>
                 {/*<div className="nav-item dropdown">
@@ -90,7 +105,12 @@ export default function Navbar() {
                       </a>
                     </div> 
                   </div>*/}
-                <Link href="/contact" className="nav-item nav-link">
+                <Link
+                  href="/contact"
+                  className={`nav-item nav-link ${
+                    pathname === "/contact" ? "active" : ""
+                  }`}
+                >
                   Contact
                 </Link>
               </div>

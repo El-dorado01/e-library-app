@@ -45,7 +45,7 @@ export async function fetchPopularBooks(sortBy) {
       const categoryBooks = data.items.map((item) => ({
         id: item.id, // Google Books uses volumeId
         title: item.volumeInfo.title,
-        authors: item.volumeInfo.authors || ["Unknown"],
+        authors: item.volumeInfo.authors || ["No information available"],
         subjects: item.volumeInfo.categories || ["N/A"],
         cover: item.volumeInfo.imageLinks?.thumbnail || null,
       }));
@@ -107,7 +107,7 @@ export async function fetchNewReleases(sortBy) {
       const categoryBooks = data.items.map((item) => ({
         id: item.id, // Google Books uses volumeId
         title: item.volumeInfo.title,
-        authors: item.volumeInfo.authors || ["Unknown"],
+        authors: item.volumeInfo.authors || ["No information available"],
         subjects: item.volumeInfo.categories || ["N/A"],
         cover: item.volumeInfo.imageLinks?.thumbnail || null,
       }));
@@ -132,19 +132,19 @@ export async function fetchNewReleases(sortBy) {
 /*
   FETCHES BOOKS PER PAGE FOR A SINGLE CATEGORY
 */
-export async function fetchNewReleasesByPage(sortBy, page) {
+export async function fetchNewReleasesByPage(query, sortBy, page) {
   const resultsPerPage = 15;
   const startIndex = (page - 1) * resultsPerPage;
 
   try {
     const response = await fetch(
-      `${BASE_URL}?q=books&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=${sortBy}&key=${GOOGLE_BOOKS_API_KEY}`,
+      `${BASE_URL}?q=${query}&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=${sortBy}&key=${GOOGLE_BOOKS_API_KEY}`,
       {
         cache: "force-cache",
       }
     );
     if (!response.ok) {
-        const errorText = await response.text();
+      const errorText = await response.text();
       throw new Error(`API error: ${response.status} - ${errorText}`);
     }
 
@@ -159,10 +159,12 @@ export async function fetchNewReleasesByPage(sortBy, page) {
       };
     }
 
+    console.log("Item One: ", data.items[12].volumeInfo);
+
     const books = data.items.map((item) => ({
       id: item.id,
       title: item.volumeInfo.title,
-      authors: item.volumeInfo.authors || ["Unknown"],
+      authors: item.volumeInfo.authors || ["No information available"],
       subjects: item.volumeInfo.categories || ["N/A"],
       cover: item.volumeInfo.imageLinks?.thumbnail || null,
       isWork: false, // Google Books doesn’t distinguish works vs editions like Open Library
@@ -205,7 +207,7 @@ export async function fetchCategoryBooksByPage(category, page) {
       }
     );
     if (!response.ok) {
-        const errorText = await response.text();
+      const errorText = await response.text();
       throw new Error(`API error: ${response.status} - ${errorText}`);
     }
 
@@ -223,7 +225,7 @@ export async function fetchCategoryBooksByPage(category, page) {
     const books = data.items.map((item) => ({
       id: item.id,
       title: item.volumeInfo.title,
-      authors: item.volumeInfo.authors || ["Unknown"],
+      authors: item.volumeInfo.authors || ["No information available"],
       subjects: item.volumeInfo.categories || ["N/A"],
       cover: item.volumeInfo.imageLinks?.thumbnail || null,
       isWork: false, // Google Books doesn’t distinguish works vs editions like Open Library
@@ -253,7 +255,6 @@ export async function fetchCategoryBooksByPage(category, page) {
   FETCHES A SINGLE BOOK BY ITS ID
 */
 export async function fetchBookById(id) {
-
   try {
     const response = await fetch(
       `${BASE_URL}/${id}?key=${GOOGLE_BOOKS_API_KEY}`,
@@ -272,7 +273,7 @@ export async function fetchBookById(id) {
       throw new Error(`API error: ${response.status} - ${errorText}`);
     }
 
-    const data = await response.json();    
+    const data = await response.json();
 
     const book = {
       url:
@@ -282,9 +283,7 @@ export async function fetchBookById(id) {
       title: data.volumeInfo.title,
       subtitle: data.volumeInfo.subtitle,
       numberOfPages: data.volumeInfo.pageCount,
-      authors: data.volumeInfo.authors || [
-         "Unknown",
-      ],
+      authors: data.volumeInfo.authors || ["No information available"],
       publishers: data.volumeInfo.publisher
         ? [
             {
