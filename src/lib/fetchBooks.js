@@ -189,19 +189,30 @@ export async function fetchNewReleasesByPage(query, sortBy, page) {
 /*
   FETCHES BOOKS PER PAGE FOR A SINGLE CATEGORY
 */
-export async function fetchCategoryBooksByPage(category, page) {
+export async function fetchCategoryBooksByPage(
+  category,
+  page,
+  sortBy = "relevance",
+  query = null
+) {
   const resultsPerPage = 9;
   const startIndex = (page - 1) * resultsPerPage;
 
   try {
-    const response = await fetch(
-      `${BASE_URL}?q=${encodeURIComponent(
+    let FULL_QUERY_URL;
+    if (query) {
+      FULL_QUERY_URL = `${BASE_URL}?q=${query}+subject:${encodeURIComponent(
         category
-      )}&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=relevance&key=${GOOGLE_BOOKS_API_KEY}`,
-      {
-        cache: "force-cache",
-      }
-    );
+      )}&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=${sortBy}&key=${GOOGLE_BOOKS_API_KEY}`;
+    } else {
+      FULL_QUERY_URL = `${BASE_URL}?q=${encodeURIComponent(
+        category
+      )}&maxResults=${resultsPerPage}&startIndex=${startIndex}&orderBy=${sortBy}&key=${GOOGLE_BOOKS_API_KEY}`;
+    }
+
+    const response = await fetch(`${FULL_QUERY_URL}`, {
+      cache: "no-store",
+    });
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`API error: ${response.status} - ${errorText}`);
@@ -215,6 +226,8 @@ export async function fetchCategoryBooksByPage(category, page) {
         currentPage: page,
         booksPerPage: resultsPerPage,
         error: "No books found for this category or page.",
+        query: query | null,
+        sortBy,
       };
     }
 
@@ -232,6 +245,8 @@ export async function fetchCategoryBooksByPage(category, page) {
       totalBooks: data.totalItems || 0,
       currentPage: parseInt(page, 10),
       booksPerPage: resultsPerPage,
+      query: query | null,
+      sortBy,
     };
   } catch (error) {
     console.error("Fetch error:", error.message);
@@ -243,6 +258,8 @@ export async function fetchCategoryBooksByPage(category, page) {
       error: error.message.includes("API error")
         ? `Failed to fetch books: ${error.message}`
         : "Network error: Please check your connection and try again.",
+      query: query | null,
+      sortBy,
     };
   }
 }
@@ -342,12 +359,12 @@ export async function fetchBookById(id) {
 FETCH FIRST THREE BOOKS BASED ON USER QUERY
 */
 
-export async function submitSearch(formData) {
+export async function submitSearch(formData, maxResults) {
   const input = formData.get("search-input");
 
   try {
     const response = await fetch(
-      `${BASE_URL}?q=${input}&maxResults=3&orderBy=relevance&key=${GOOGLE_BOOKS_API_KEY}`,
+      `${BASE_URL}?q=${input}&maxResults=${maxResults}&orderBy=relevance&key=${GOOGLE_BOOKS_API_KEY}`,
       {
         cache: "force-cache",
       }

@@ -20,7 +20,7 @@ export default function TopSearchBar() {
     setIsLoading(true);
 
     try {
-      const result = await submitSearch(formData);
+      const result = await submitSearch(formData, 3);
       setSearchResult(result);
       setIsLoading(false);
       if (
@@ -63,6 +63,7 @@ export default function TopSearchBar() {
             className="form-control"
             placeholder="Search for books with names, authors, ISBNs..."
             name="search-input"
+            required
             onChange={(e) => setSearchInput(e.target.value)}
           />
           <div className="input-group-append" onClick={handleSubmit}>

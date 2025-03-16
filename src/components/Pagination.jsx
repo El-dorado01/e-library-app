@@ -5,10 +5,12 @@ export default function Pagination({
   currentPage,
   totalBooks,
   booksPerPage,
+  query,
 }) {
-  currentPage = parseInt(currentPage)
-  
+  currentPage = parseInt(currentPage);
+
   const totalPages = Math.ceil(totalBooks / booksPerPage);
+
   const getPageNumbers = () => {
     const pages = [];
     const maxVisiblePages = 3;
@@ -27,6 +29,15 @@ export default function Pagination({
 
   const pageNumbers = getPageNumbers();
 
+  const getPageUrl = (pageNum) => {
+    const baseUrl = `/category/${category}?page=${pageNum}`;
+    return query
+      ? `/category/${category}?query=${encodeURIComponent(
+          query
+        )}&page=${pageNum}`
+      : baseUrl;
+  };
+
   return (
     <div className="col-12 pb-1">
       <nav aria-label="Page navigation">
@@ -35,11 +46,11 @@ export default function Pagination({
             className={currentPage === 1 ? "page-item disabled" : "page-item"}
           >
             <Link
-              href={`/category/${category}?page=${currentPage - 1}`}
+              href={getPageUrl(currentPage - 1)}
               className="page-link"
               aria-label="Previous"
             >
-              <span aria-hidden="true">&laquo;</span>
+              <span aria-hidden="true">«</span>
               <span className="sr-only">Previous</span>
             </Link>
           </li>
@@ -48,10 +59,7 @@ export default function Pagination({
               key={page}
               className={`page-item ${currentPage === page ? "active" : ""}`}
             >
-              <Link
-                href={`/category/${category}?page=${page}`}
-                className="page-link"
-              >
+              <Link href={getPageUrl(page)} className="page-link">
                 {page}
               </Link>
             </li>
@@ -60,11 +68,11 @@ export default function Pagination({
             className={`page-item ${currentPage === totalPages && "disabled"}`}
           >
             <Link
-              href={`/category/${category}?page=${currentPage + 1}`}
+              href={getPageUrl(currentPage + 1)}
               className="page-link"
               aria-label="Next"
             >
-              <span aria-hidden="true">&raquo;</span>
+              <span aria-hidden="true">»</span>
               <span className="sr-only">Next</span>
             </Link>
           </li>

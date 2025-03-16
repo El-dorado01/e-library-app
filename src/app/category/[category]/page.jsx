@@ -12,9 +12,16 @@ export default async function CategoryPage({ params, searchParams }) {
   const { category } = await params;
   const allParams = await searchParams;
   const page = allParams.page || "1";
+  const query = allParams.query || null;
+  const sortBy = allParams.sortBy || "relevance";
 
   // Fetch initial data server-side
-  const initialData = await fetchCategoryBooksByPage(category, page);
+  const initialData = await fetchCategoryBooksByPage(
+    category,
+    page,
+    sortBy,
+    query
+  );
 
   return (
     <>
@@ -24,13 +31,14 @@ export default async function CategoryPage({ params, searchParams }) {
           <Filter />
           <div className="col-lg-9 col-md-12">
             <div className="row pb-3">
-              <CategoryBookSearch />
+              <CategoryBookSearch category={category} sortBy={sortBy} />
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSkeleton />}>
                   {/* <CategoryBooks page={page} category={category} /> */}
                   <CategoryBooksClient
                     initialData={initialData}
                     category={category}
+                    sortBy={sortBy}
                   />
                 </Suspense>
               </ErrorBoundary>
