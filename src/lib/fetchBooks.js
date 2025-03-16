@@ -38,7 +38,6 @@ export async function fetchPopularBooks(sortBy) {
 
       const data = await response.json();
       if (!data.items || data.items.length === 0) {
-        console.warn(`No books found for category: ${category}`);
         continue; // Skip to next category if no results
       }
 
@@ -100,7 +99,6 @@ export async function fetchNewReleases(sortBy) {
 
       const data = await response.json();
       if (!data.items || data.items.length === 0) {
-        console.warn(`No books found for category: ${category}`);
         continue; // Skip to next category if no results
       }
 
@@ -158,8 +156,6 @@ export async function fetchNewReleasesByPage(query, sortBy, page) {
         error: "No books found for this category or page.",
       };
     }
-
-    console.log("Item One: ", data.items[12].volumeInfo);
 
     const books = data.items.map((item) => ({
       id: item.id,
@@ -264,7 +260,6 @@ export async function fetchBookById(id) {
     );
     if (!response.ok) {
       if (response.status === 404) {
-        console.warn(`No data found for ID: ${id}`);
         return {
           notFound: true,
         };
@@ -338,6 +333,64 @@ export async function fetchBookById(id) {
         ? `Book not found: Invalid or unmatched ID (${id})`
         : error.message.includes("API error")
         ? `Failed to fetch book: ${error.message}`
+        : "Network error: Please check your connection and try again.",
+    };
+  }
+}
+
+/* 
+FETCH FIRST THREE BOOKS BASED ON USER QUERY
+*/
+
+export async function submitSearch(formData) {
+  const input = formData.get("search-input");
+
+  try {
+    const response = await fetch(
+      `${BASE_URL}?q=${input}&maxResults=3&orderBy=relevance&key=${GOOGLE_BOOKS_API_KEY}`,
+      {
+        cache: "force-cache",
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.log(errorText);
+
+      return {
+        books: [],
+        error: "An error occured, try again later!",
+      };
+
+      // throw new Error(`API error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    if (!data.items || data.items.length === 0) {
+      return {
+        books: [],
+        error: "No books were found.",
+      };
+    }
+
+    const books = data.items.map((item) => ({
+      id: item.id,
+      title: item.volumeInfo.title,
+      authors: item.volumeInfo.authors || ["No information available"],
+      subjects: item.volumeInfo.categories || ["N/A"],
+      cover: item.volumeInfo.imageLinks?.thumbnail || null,
+      isWork: false, // Google Books doesn’t distinguish works vs editions like Open Library
+    }));
+
+    return {
+      books,
+    };
+  } catch (error) {
+    console.error("Fetch error:", error.message);
+    return {
+      books: [],
+      error: error.message.includes("API error")
+        ? `Failed to fetch books: ${error.message}`
         : "Network error: Please check your connection and try again.",
     };
   }
