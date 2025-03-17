@@ -1,8 +1,5 @@
 "use client";
 
-import mainFunction from "@/scripts/main";
-import { useEffect } from "react";
-import $ from "jquery";
 import Link from "next/link";
 
 import { usePathname } from "next/navigation";
@@ -12,10 +9,6 @@ import NonCollapsibleNavbar from "./NonCollapsibleNavbar";
 import NavbarLinks from "./NavbarLinks";
 
 export default function Navbar() {
-  useEffect(() => {
-    mainFunction($);
-  }, []);
-
   const pathname = usePathname();
 
   return (

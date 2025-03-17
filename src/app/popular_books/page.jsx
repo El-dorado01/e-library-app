@@ -1,7 +1,6 @@
 import PageHeader from "@/components/PageHeader";
 import Filter from "@/components/Filter";
 import NewReleasesClient from "@/components/books/NewReleasesClient";
-import CategoryBookSearch from "@/components/CategoryBookSearch";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Suspense } from "react";
@@ -18,11 +17,10 @@ export default async function NewReleasesPage({ searchParams }) {
     <>
       <PageHeader pageTitle={"Popular Books"} pageName={"Popular Books"} />
       <div className="container-fluid pt-5">
-        <div className="row px-xl-5">
-          <Filter />
-          <div className="col-lg-9 col-md-12">
+        <div className="row px-xl-5 pb-3">
+          {/* <Filter /> */}
+          <div className="col-lg-12 col-md-12">
             <div className="row pb-3">
-              <CategoryBookSearch />
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSkeleton />}>
                   <NewReleasesClient initialData={initialData} />

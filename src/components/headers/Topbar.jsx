@@ -53,14 +53,14 @@ export default function Topbar() {
           </div>
           <TopSearchBar />
           <div className="col-lg-3 col-6 text-right">
-            <a href="" className="btn border">
+            <Link href="" className="btn border">
               <i className="fas fa-heart text-primary"></i>
               <span className="badge">0</span>
-            </a>
-            <a href="" className="btn border">
+            </Link>
+            {/* <a href="" className="btn border">
               <i className="fas fa-shopping-cart text-primary"></i>
               <span className="badge">0</span>
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

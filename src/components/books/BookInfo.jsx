@@ -1,5 +1,6 @@
 import DownloadButton from "../DownloadButton";
 import BookDescription from "./BookDescription";
+import BookShareButtons from "./BookShareButtons";
 
 export default function BookInfo({
   title,
@@ -25,7 +26,7 @@ export default function BookInfo({
         </div>
         <small className="pt-1">(50 Reviews)</small>
       </div>
-      <h3 className="font-weight-semi-bold mb-4">$150.00</h3>
+      {/* <h3 className="font-weight-semi-bold mb-4">$150.00</h3> */}
       <BookDescription descriptions={descriptions} />
       <div className="d-flex mb-3">
         <p className="text-dark font-weight-medium mb-0 mr-3">Author(s):</p>
@@ -50,7 +51,7 @@ export default function BookInfo({
         id={id}
         bookUrl={bookUrl}
       />
-      <div className="d-flex align-items-center mb-4 pt-2">
+      {/* <div className="d-flex align-items-center mb-4 pt-2">
         <div className="input-group quantity mr-3" style={{ width: "130px" }}>
           <div className="input-group-btn">
             <button className="btn btn-primary btn-minus">
@@ -72,24 +73,8 @@ export default function BookInfo({
         <button className="btn btn-primary px-3">
           <i className="fa fa-shopping-cart mr-1"></i> Add To Cart
         </button>
-      </div>
-      <div className="d-flex pt-2">
-        <p className="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
-        <div className="d-inline-flex">
-          <a className="text-dark px-2" href="">
-            <i className="fab fa-facebook-f"></i>
-          </a>
-          <a className="text-dark px-2" href="">
-            <i className="fab fa-twitter"></i>
-          </a>
-          <a className="text-dark px-2" href="">
-            <i className="fab fa-linkedin-in"></i>
-          </a>
-          <a className="text-dark px-2" href="">
-            <i className="fab fa-pinterest"></i>
-          </a>
-        </div>
-      </div>
+      </div> */}
+      <BookShareButtons bookTitle={title} bookId={id} />
     </div>
   );
 }

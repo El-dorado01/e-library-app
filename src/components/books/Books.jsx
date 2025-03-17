@@ -11,7 +11,7 @@ export default function Books({ books: initialBooks }) {
     <>
       {books.length > 0 ? (
         books.map((book, index) => (
-          <div className="col-lg-4 col-md-6 col-sm-12 pb-1" key={index}>
+          <div className="col-lg-3 col-md-6 col-sm-12 pb-1" key={index}>
             <div className="card product-item border-0 mb-4">
               <div className="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                 {book.cover ? (
@@ -59,10 +59,8 @@ export default function Books({ books: initialBooks }) {
                         .join(", ")}
                 </div>
                 <div className="d-flex justify-content-center">
-                  <h6>$123.00</h6>
-                  <h6 className="text-muted ml-2">
-                    <del>$123.00</del>
-                  </h6>
+                  <h6>Category: </h6>
+                  <h6 className="text-muted ml-2">{book.subjects[0]}</h6>
                 </div>
               </div>
               <div className="card-footer d-flex justify-content-between bg-light border">
@@ -72,10 +70,10 @@ export default function Books({ books: initialBooks }) {
                 >
                   <i className="fas fa-eye text-primary mr-1"></i>View Detail
                 </Link>
-                <a href="" className="btn btn-sm text-dark p-0">
-                  <i className="fas fa-shopping-cart text-primary mr-1"></i>
-                  Add To Cart
-                </a>
+                <Link href="" className="btn btn-sm text-dark p-0">
+                  <i className="fas fa-heart text-primary mr-1"></i>
+                  Add To Favourites
+                </Link>
               </div>
             </div>
           </div>

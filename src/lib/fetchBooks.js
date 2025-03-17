@@ -131,7 +131,7 @@ export async function fetchNewReleases(sortBy) {
   FETCHES BOOKS PER PAGE FOR A SINGLE CATEGORY
 */
 export async function fetchNewReleasesByPage(query, sortBy, page) {
-  const resultsPerPage = 15;
+  const resultsPerPage = 16;
   const startIndex = (page - 1) * resultsPerPage;
 
   try {
@@ -195,7 +195,7 @@ export async function fetchCategoryBooksByPage(
   sortBy = "relevance",
   query = null
 ) {
-  const resultsPerPage = 9;
+  const resultsPerPage = 12;
   const startIndex = (page - 1) * resultsPerPage;
 
   try {

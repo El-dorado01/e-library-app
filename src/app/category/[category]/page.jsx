@@ -27,9 +27,10 @@ export default async function CategoryPage({ params, searchParams }) {
     <>
       <PageHeader pageTitle={category} pageName={"Category"} />
       <div className="container-fluid pt-5">
-        <div className="row px-xl-5">
-          <Filter />
-          <div className="col-lg-9 col-md-12">
+        
+        <div className="row px-xl-5 pb-3">
+          {/* <Filter /> */}
+          <div className="col-lg-12 col-md-12">
             <div className="row pb-3">
               <CategoryBookSearch category={category} sortBy={sortBy} />
               <ErrorBoundary>

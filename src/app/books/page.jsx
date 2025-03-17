@@ -5,17 +5,22 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Suspense } from "react";
 import { fetchNewReleasesByPage } from "@/lib/fetchBooks";
+import { notFound } from "next/navigation";
 
 export default async function NewReleasesPage({ searchParams }) {
   const allParams = await searchParams;
   const page = allParams.page || "1";
+  const query = allParams.q || null;
+
+//   Render a Not Found Page if there is no query
+  if(!query) notFound()
 
   // Fetch initial data server-side
-  const initialData = await fetchNewReleasesByPage("books", "newest", page);
+  const initialData = await fetchNewReleasesByPage(query, "relevance", page);
 
   return (
     <>
-      <PageHeader pageTitle={"New Releases"} pageName={"New Releases"} />
+      <PageHeader pageTitle={"Search Results"} pageName={"Books"} />
       <div className="container-fluid pt-5">
         <div className="row px-xl-5 pb-3">
           {/* <Filter /> */}

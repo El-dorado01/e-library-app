@@ -13,9 +13,9 @@ export default function MoreBookInfo({ bookInfo }) {
           <a className="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">
             Information
           </a>
-          <a className="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">
+          {/* <a className="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">
             Reviews (0)
-          </a>
+          </a> */}
         </div>
         <div className="tab-content">
           <div className="tab-pane fade show active" id="tab-pane-1">

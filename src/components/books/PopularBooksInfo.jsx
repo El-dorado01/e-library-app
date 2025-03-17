@@ -67,9 +67,9 @@ export default function PopularBooksInfo({ books: initialBooks }) {
                         .join(", ")}
                 </div>
                 <div className="d-flex justify-content-center">
-                  <h6>$123.00</h6>
+                  <h6>Category:</h6>
                   <h6 className="text-muted ml-2">
-                    <del>$123.00</del>
+                    {book.subjects[0]}
                   </h6>
                 </div>
               </div>

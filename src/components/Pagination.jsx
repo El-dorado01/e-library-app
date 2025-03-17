@@ -6,6 +6,7 @@ export default function Pagination({
   totalBooks,
   booksPerPage,
   query,
+  sortBy
 }) {
   currentPage = parseInt(currentPage);
 
@@ -30,11 +31,11 @@ export default function Pagination({
   const pageNumbers = getPageNumbers();
 
   const getPageUrl = (pageNum) => {
-    const baseUrl = `/category/${category}?page=${pageNum}`;
+    const baseUrl = `/category/${category}?page=${pageNum}&sortBy=${sortBy}`;
     return query
       ? `/category/${category}?query=${encodeURIComponent(
           query
-        )}&page=${pageNum}`
+        )}&page=${pageNum}&sortBy=${sortBy}`
       : baseUrl;
   };
 
