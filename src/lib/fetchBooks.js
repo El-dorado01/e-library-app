@@ -2,7 +2,7 @@ import { delay } from "./delay";
 
 // Google Books API base URL (replace YOUR_API_KEY with your actual key later)
 const GOOGLE_BOOKS_API_KEY =
-  process.env.GOOGLE_BOOKS_API_KEY || "AIzaSyB7WrXP65MTMlbctW0U_XgO-lC553HlC1E";
+  process.env.GOOGLE_BOOKS_API_KEY || "";
 const BASE_URL = "https://www.googleapis.com/books/v1/volumes";
 
 /*
